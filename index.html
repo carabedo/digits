@@ -118,7 +118,7 @@ async function runModel(data) {
     const predictions = model.predict(exampleInput);
     const predictedClassIndex = predictions.argMax(1).dataSync()[0];
     console.log('Predicted Number:', predictedClassIndex);
-    console.log(data.toString())
+
   }
 
 });
