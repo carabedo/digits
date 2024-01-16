@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>28x28 Grid</title>
+  <style>
+    body {
+      display: flex; 
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(28, 20px); /* Adjust the size as needed */
+      grid-gap: 1px; /* Adjust the gap between grid items */
+    }
+
+    .grid-item {
+      width: 20px; /* Adjust the size as needed */
+      height: 20px; /* Adjust the size as needed */
+      border: 1px solid #000; /* Adjust the border color as needed */
+    }
+
+    #botonera {
+        display: flex; 
+        flex-direction: row;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="grid-container" id="gridContainer"></div>
+  <div id="botonera">
+    <button onclick="saveGrid()">Predecir</button>
+    <button onclick="cleanGrid()">Limpiar</button>
+</div>
+
+  <script>
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const gridContainer = document.getElementById('gridContainer');
+      let isDrawing = false;
+
+      const gridState = Array.from({ length: 28 }, () => Array(28).fill(0));
+
+
+
+
+      // Create the 28x28 grid
+      for (let i = 0; i < 28 * 28; i++) {
+        const gridItem = document.createElement('div');
+        gridItem.classList.add('grid-item');
+
+        // Add mouse event listeners
+        gridItem.addEventListener('mousedown', () => {
+          isDrawing = true;
+          setColor(gridItem);
+        });
+
+        gridItem.addEventListener('mouseenter', () => {
+          if (isDrawing) {
+            setColor(gridItem);
+          }
+        });
+
+        gridItem.addEventListener('mouseup', () => {
+          isDrawing = false;
+        });
+
+        gridContainer.appendChild(gridItem);
+      }
+
+
+      window.saveGrid = function () {
+        console.log(gridState);
+        // You can use the gridState array as needed, for example, send it to a server, etc.
+      };
+
+      function setColor(element) {
+
+        element.style.backgroundColor = '#000'; // Adjust the color as needed
+        const index = Array.from(element.parentElement.children).indexOf(element);
+        const row = Math.floor(index / 28);
+        const col = index % 28;
+        gridState[row][col] = 1; // Set to 1 when color changes
+
+      }
+
+      window.cleanGrid = function() {
+                gridState.forEach(row => row.fill(0));
+                // Clear the colors in the grid
+                const gridItems = document.querySelectorAll('.grid-item');
+                gridItems.forEach(item => (item.style.backgroundColor = ''));      }
+    });
+  </script>
+</body>
+</html>
