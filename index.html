@@ -42,7 +42,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 <script>
 
-
+    let model=[]
 
     let data = []
 
@@ -80,6 +80,7 @@
       }
 
 
+
       window.saveGrid = function () {
      
         data=gridState
@@ -106,14 +107,18 @@
     
     
 async function runModel(data) {
-
-    const model = await tf.loadLayersModel('./digits_js/model.json');
-
+    // https://github.com/sudharsan13296/Deep-Reinforcement-Learning-With-Python/blob/master/08.%20A%20primer%20on%20TensorFlow/8.10%20MNIST%20digits%20classification%20in%20TensorFlow%202.0.ipynb
+    // model = await tf.loadLayersModel('./digits_js/model.json');
+    // https://stackoverflow.com/questions/64931078/how-do-i-run-my-model-json-file-on-the-web-to-test-predictions
+    model = await tf.loadGraphModel('./digits2/model.json');
     // Make predictions using the loaded model
-    const exampleInput = tf.tensor2d([data.flat()]);
+
+    
+    const exampleInput = tf.tensor2d([data.flat()],undefined,dtype='int32');
     const predictions = model.predict(exampleInput);
     const predictedClassIndex = predictions.argMax(1).dataSync()[0];
     console.log('Predicted Number:', predictedClassIndex);
+    console.log(data.toString())
   }
 
 });
