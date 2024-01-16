@@ -39,11 +39,12 @@
     <button onclick="saveGrid()">Predecir</button>
     <button onclick="cleanGrid()">Limpiar</button>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script>
 
-  <script>
 
 
-
+    let data = []
 
     document.addEventListener('DOMContentLoaded', function () {
       const gridContainer = document.getElementById('gridContainer');
@@ -80,7 +81,9 @@
 
 
       window.saveGrid = function () {
-        console.log(gridState);
+     
+        data=gridState
+        runModel(data)
         // You can use the gridState array as needed, for example, send it to a server, etc.
       };
 
@@ -99,7 +102,21 @@
                 // Clear the colors in the grid
                 const gridItems = document.querySelectorAll('.grid-item');
                 gridItems.forEach(item => (item.style.backgroundColor = ''));      }
-    });
+    
+    
+    
+async function runModel(data) {
+
+    const model = await tf.loadLayersModel('./digits_js/model.json');
+
+    // Make predictions using the loaded model
+    const exampleInput = tf.tensor2d([data.flat()]);
+    const predictions = model.predict(exampleInput);
+    const predictedClassIndex = predictions.argMax(1).dataSync()[0];
+    console.log('Predicted Number:', predictedClassIndex);
+  }
+
+});
   </script>
 </body>
 </html>
