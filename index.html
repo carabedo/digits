@@ -14,16 +14,35 @@
       margin: 0;
     }
 
+    #box {
+      display: flex; 
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 65%;
+    }
     .grid-container {
       display: grid;
-      grid-template-columns: repeat(28, 20px); /* Adjust the size as needed */
-      grid-gap: 1px; /* Adjust the gap between grid items */
+      grid-template-columns: repeat(28, 15px); /* Adjust the size as needed */
+      grid-gap: 0.5px; /* Adjust the gap between grid items */
+      width: 50%; 
+
     }
 
+    .number-box {
+    width: 50%; 
+    height: 100%;
+    border: 1px solid #000; /* Same border as the grid items */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 200px; /* Adjust the font size as needed */
+  }
+
     .grid-item {
-      width: 20px; /* Adjust the size as needed */
-      height: 20px; /* Adjust the size as needed */
-      border: 1px solid #000; /* Adjust the border color as needed */
+      width: 15px; /* Adjust the size as needed */
+      height: 15px; /* Adjust the size as needed */
+      border: 0.5px solid #000; /* Adjust the border color as needed */
     }
 
     #botonera {
@@ -31,10 +50,18 @@
         flex-direction: row;
     }
 
+    #botonera button {
+      width: 250px; /* Adjust the width as needed */
+      margin: 5px; /* Add margin as needed */
+    }
+
   </style>
 </head>
 <body>
-  <div class="grid-container" id="gridContainer"></div>
+  <div id="box"> 
+     <div class="grid-container" id="gridContainer"></div>
+     <div class="number-box" id="numberBox">;)</div>
+</div>
   <div id="botonera">
     <button onclick="saveGrid()">Predecir</button>
     <button onclick="cleanGrid()">Limpiar</button>
@@ -104,7 +131,15 @@
                 const gridItems = document.querySelectorAll('.grid-item');
                 gridItems.forEach(item => (item.style.backgroundColor = ''));      }
     
-    
+function changeNumber(predicion) {
+      // Get the numberBox element
+      var numberBox = document.getElementById("numberBox");
+
+      // Update the content of the numberBox
+      if (predicion !== null) {
+        numberBox.innerText = predicion;
+      }
+    }    
     
 async function runModel(data) {
     // https://github.com/sudharsan13296/Deep-Reinforcement-Learning-With-Python/blob/master/08.%20A%20primer%20on%20TensorFlow/8.10%20MNIST%20digits%20classification%20in%20TensorFlow%202.0.ipynb
@@ -118,7 +153,7 @@ async function runModel(data) {
     const predictions = model.predict(exampleInput);
     const predictedClassIndex = predictions.argMax(1).dataSync()[0];
     console.log('Predicted Number:', predictedClassIndex);
-
+    changeNumber(predictedClassIndex)
   }
 
 });
